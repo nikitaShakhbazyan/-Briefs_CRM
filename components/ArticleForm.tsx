@@ -73,7 +73,7 @@ export default function ArticleForm({ onArticleCreated }: ArticleFormProps) {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             placeholder="e.g., AI technology"
           />
         </div>
@@ -91,7 +91,7 @@ export default function ArticleForm({ onArticleCreated }: ArticleFormProps) {
             value={brandDomain}
             onChange={(e) => setBrandDomain(e.target.value)}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             placeholder="e.g., example.com"
           />
         </div>
@@ -110,7 +110,7 @@ export default function ArticleForm({ onArticleCreated }: ArticleFormProps) {
             onChange={(e) => setLanguage(e.target.value)}
             required
             maxLength={10}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
             placeholder="e.g., en, he, ru"
           />
         </div>
@@ -126,7 +126,7 @@ export default function ArticleForm({ onArticleCreated }: ArticleFormProps) {
             id="aiTool"
             value={aiTool}
             onChange={(e) => setAiTool(e.target.value as AITool)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"
           >
             <option value="mock">Mock (Testing)</option>
             <option value="gpt">GPT-4o Mini</option>
