@@ -104,18 +104,6 @@ interface AIProvider {
 ```
 
 This allows easy addition of new providers without changing business logic.
-
-## Development Stages
-
-- [x] Stage 1: Project setup and configuration
-- [ ] Stage 2: MongoDB schema and connection
-- [ ] Stage 3: AI provider adapters
-- [ ] Stage 4: Backend API routes
-- [ ] Stage 5: Frontend article creation
-- [ ] Stage 6: Frontend article list
-- [ ] Stage 7: n8n workflows
-- [ ] Stage 8: Docker setup
-
 ## Testing
 
 ```bash
@@ -134,7 +122,3 @@ This will start:
 - Next.js application
 - MongoDB
 - n8n
-
-## License
-
-MIT
