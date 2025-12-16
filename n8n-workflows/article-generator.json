@@ -1,0 +1,146 @@
+{
+  "name": "Article Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "generate-article",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [250, 300],
+      "webhookId": "generate-article"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=http://localhost:3000/api/articles/{{ $json.body.articleId }}/status",
+        "options": {
+          "bodyContentType": "json"
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "status",
+              "value": "pending"
+            }
+          ]
+        }
+      },
+      "id": "update-to-pending",
+      "name": "Update Status to Pending",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/articles/generate",
+        "options": {
+          "bodyContentType": "json"
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "keyword",
+              "value": "={{ $('Webhook Trigger').item.json.body.keyword }}"
+            },
+            {
+              "name": "brandDomain",
+              "value": "={{ $('Webhook Trigger').item.json.body.brandDomain }}"
+            },
+            {
+              "name": "language",
+              "value": "={{ $('Webhook Trigger').item.json.body.language }}"
+            },
+            {
+              "name": "aiTool",
+              "value": "={{ $('Webhook Trigger').item.json.body.aiTool }}"
+            }
+          ]
+        }
+      },
+      "id": "generate-content",
+      "name": "Generate Article Content",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:3000/api/articles/complete",
+        "options": {
+          "bodyContentType": "json"
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "articleId",
+              "value": "={{ $('Webhook Trigger').item.json.body.articleId }}"
+            },
+            {
+              "name": "content",
+              "value": "={{ $json.content }}"
+            }
+          ]
+        }
+      },
+      "id": "complete-article",
+      "name": "Complete Article",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [850, 300]
+    }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Update Status to Pending",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Status to Pending": {
+      "main": [
+        [
+          {
+            "node": "Generate Article Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Article Content": {
+      "main": [
+        [
+          {
+            "node": "Complete Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-01-01T00:00:00.000Z",
+  "versionId": "1"
+}

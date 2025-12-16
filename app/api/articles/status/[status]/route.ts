@@ -6,7 +6,7 @@ interface RouteContext {
   params: Promise<{ status: string }>;
 }
 
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(_request: NextRequest, context: RouteContext) {
   try {
     const { status } = await context.params;
 

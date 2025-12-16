@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: briefs-mongodb
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: briefs-crm
+    networks:
+      - briefs-network
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: briefs-n8n
+    restart: unless-stopped
+    ports:
+      - '5678:5678'
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n-workflows:/workflows:ro
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - WEBHOOK_URL=http://localhost:5678/
+    networks:
+      - briefs-network
+    depends_on:
+      - mongodb
+
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: briefs-nextjs
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/briefs-crm
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - PERPLEXITY_API_KEY=${PERPLEXITY_API_KEY}
+      - N8N_WEBHOOK_URL=http://n8n:5678/webhook/article-complete
+    networks:
+      - briefs-network
+    depends_on:
+      - mongodb
+      - n8n
+
+networks:
+  briefs-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  n8n_data:

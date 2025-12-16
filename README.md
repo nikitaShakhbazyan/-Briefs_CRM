@@ -104,21 +104,118 @@ interface AIProvider {
 ```
 
 This allows easy addition of new providers without changing business logic.
+
+## Development Stages
+
+- [x] Project setup and configuration
+- [x] MongoDB schema and connection
+- [x] AI provider adapters
+- [x] Backend API routes
+- [x] Frontend article creation
+- [x] Frontend article list
+- [x] n8n workflows
+- [x] Docker setup
+
+## API Endpoints
+
+### Articles
+- `POST /api/articles` - Create new article
+- `GET /api/articles` - Get all articles
+- `GET /api/articles/[id]` - Get article by ID
+- `GET /api/articles/status/[status]` - Get articles by status (for n8n)
+- `PATCH /api/articles/[id]/status` - Update article status (for n8n)
+- `POST /api/articles/generate` - Generate article content (for n8n)
+- `POST /api/articles/complete` - Complete article with content (for n8n)
+
+## Docker Deployment
+
+### Quick Start with Docker
+
+Start all services (Next.js, MongoDB, n8n):
+
+```bash
+docker-compose up -d
+```
+
+Services will be available at:
+- **Next.js Application**: http://localhost:3000
+- **n8n Workflow Automation**: http://localhost:5678
+- **MongoDB**: localhost:27017
+
+### Import n8n Workflows
+
+1. Open n8n at http://localhost:5678
+2. Import workflows from `/n8n-workflows` directory:
+   - `article-queue-processor.json`
+   - `article-generator.json`
+3. Activate both workflows
+4. Workflows will automatically process articles every 2 minutes
+
+### Stop Services
+
+```bash
+docker-compose down
+```
+
+### View Logs
+
+```bash
+docker-compose logs -f
+```
+
+## Development (Without Docker)
+
+### Prerequisites
+- Node.js 18+
+- MongoDB running locally
+- n8n running locally (optional, for testing full workflow)
+
+### Start Development Server
+
+```bash
+npm run dev
+```
+
+Open http://localhost:3000
+
+### Manual n8n Setup
+
+If not using Docker, install n8n separately:
+
+```bash
+npm install -g n8n
+n8n start
+```
+
+Then import workflows as described above.
+
 ## Testing
 
-```bash
-npm test
-```
+The application includes a **Mock AI Provider** for testing without API keys:
 
-## Docker
+1. Set `AI Tool` to "Mock (Testing)" in the form
+2. Articles will be generated with demo content
+3. No API keys required
 
-Start all services with Docker Compose:
+For production, configure real AI providers in `.env.local`.
 
-```bash
-docker-compose up
-```
+## Architecture Highlights
 
-This will start:
-- Next.js application
-- MongoDB
-- n8n
+### Efficiency
+- MongoDB indexes on status and createdAt for fast queries
+- n8n polls every 2 minutes (configurable)
+- No unnecessary re-processing
+- Clean status transitions (new → pending → completed)
+
+### Generic Design
+- AI providers use Adapter Pattern
+- Easy to add new AI providers
+- Repository pattern for database operations
+- Modular n8n workflows (main + sub-flow)
+
+### Code Quality
+- TypeScript throughout
+- Clear folder structure
+- Typed models and interfaces
+- Separation of concerns
+- ESLint configured
