@@ -1,0 +1,31 @@
+{
+  "name": "briefs-crm",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "anthropic": "^0.0.0",
+    "axios": "^1.13.2",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.1",
+    "next": "16.0.10",
+    "openai": "^6.13.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.27",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.10",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
